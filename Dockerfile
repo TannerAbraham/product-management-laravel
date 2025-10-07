@@ -22,6 +22,9 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Install PHP dependencies (optimized for production)
 RUN composer install --no-dev --optimize-autoloader
 
+# Copy .env.example to .env if it doesn't exist
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
 # Generate Laravel app key
 RUN php artisan key:generate
 
@@ -33,3 +36,4 @@ EXPOSE 80
 
 # Start Apache server
 CMD ["apache2-foreground"]
+
