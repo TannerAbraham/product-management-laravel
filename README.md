@@ -309,7 +309,7 @@ Use this checklist to verify all functionality works correctly:
 
 ## 📝 Requirements Met
 
-This project fulfills all requirements from the Coalition Technologies PHP Skills Test:
+This project fulfills all customer requirements:
 
 ### Core Requirements
 - ✅ Form with Product name, Quantity in stock, Price per item
