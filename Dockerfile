@@ -1,34 +1,35 @@
-# Use the official PHP image with Composer and Apache
+# Use the official PHP 8.2 image with Apache
 FROM php:8.2-apache
 
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
-    zip unzip git libpng-dev libonig-dev libxml2-dev sqlite3 \
+    zip unzip git libpng-dev libonig-dev libxml2-dev \
+    sqlite3 libsqlite3-dev \
     && docker-php-ext-install pdo pdo_sqlite
 
-# Enable Apache mod_rewrite for Laravel routes
+# Enable Apache mod_rewrite (needed for Laravel routing)
 RUN a2enmod rewrite
 
-# Copy project files
+# Copy the application code into the container
 COPY . /var/www/html
 
 # Set working directory
 WORKDIR /var/www/html
 
-# Install Composer
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && rm composer-setup.php
+# Copy Composer from the Composer image
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install Laravel dependencies
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+# Install PHP dependencies (optimized for production)
+RUN composer install --no-dev --optimize-autoloader
 
-# Set proper permissions for storage and bootstrap/cache
+# Generate Laravel app key
+RUN php artisan key:generate
+
+# Give proper permissions to storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port 80
+# Expose port 80 for HTTP
 EXPOSE 80
 
-# Start Apache
+# Start Apache server
 CMD ["apache2-foreground"]
-
