@@ -4,6 +4,19 @@ A modern, AJAX-powered product inventory management application built with Larav
 
 ---
 
+## 🌐 Live Demo
+
+**Try it now**: [https://productmanagement.tannerabraham.com/public/](https://productmanagement.tannerabraham.com/public/)
+
+Experience the full functionality of the application without any installation. The live demo includes all features:
+- Add new products
+- Edit existing products
+- Delete products
+- Real-time AJAX updates
+- Automatic calculations
+
+---
+
 ## 📋 Overview
 
 This product management system provides a complete solution for managing product inventory with a clean, modern interface and seamless user experience.
